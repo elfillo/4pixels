@@ -28,10 +28,10 @@
                 </a>
                 @guest
                 @else
-                <a class="navbar-brand" href="{{ url('/users') }}">
+                <a class="navbar-brand" href="{{ route('user.index') }}">
                     Users
                 </a>
-                <a class="navbar-brand" href="{{ url('/departments') }}">
+                <a class="navbar-brand" href="{{ route('department.index') }}">
                     Departments
                 </a>
                 @endguest

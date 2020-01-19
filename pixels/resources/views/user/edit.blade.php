@@ -7,6 +7,7 @@
                     <div class="card-header">Add new user</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('user.update', $user->id) }}">
+                            @method('PUT')
                             @csrf
 
                             <div class="form-group row">
@@ -63,7 +64,6 @@
                                         type="password"
                                         class="form-control @error('password') is-invalid @enderror"
                                         name="password"
-                                        required
                                         autocomplete="new-password"
                                     >
 

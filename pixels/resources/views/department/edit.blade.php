@@ -7,6 +7,7 @@
                     <div class="card-header">Edit department</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('department.update', $department->id) }}" enctype="multipart/form-data">
+                            @method('PUT')
                             @csrf
 
                             <div class="form-group row">

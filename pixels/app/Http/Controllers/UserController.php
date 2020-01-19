@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -48,7 +49,7 @@ class UserController extends Controller
 
         User::create($data);
 
-        return redirect()->route('user');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -88,17 +89,25 @@ class UserController extends Controller
 
         $data = $request->all();
 
+        $password_rule = isset($data['password']) ? 'min:6' : '';
+
         $rules = array(
             'name'          => 'required|string|min:2|',
-            'email'         => 'required|email',
-            'password'      => 'required|min:6',
+            'email'         => 'sometimes|required|email|unique:users,id,'.$id,
+            'password'      => $password_rule
         );
 
         $request->validate($rules);
 
+        if(!empty($data['password'])){
+            $data['password'] = bcrypt($data['password']);
+        }else{
+            $data['password'] = $user->password;
+        }
+
         $user->update($data);
 
-        return redirect()->route('user');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -111,6 +120,6 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect()->route('user');
+        return redirect()->route('user.index');
     }
 }

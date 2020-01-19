@@ -62,7 +62,7 @@ class DepartmentController extends Controller
         $post = Department::create($data);
         $post->users()->sync($users_ids);
 
-        return redirect()->route('department');
+        return redirect()->route('department.index');
     }
 
     /**
@@ -85,33 +85,16 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         $department = Department::find($id);
-        $users = $department->users;
+        $users = User::all();
+        $selectedUsers = $department->users()->get()->pluck('id')->toArray();
 
-        $all_users = User::all();
-
-        $selected = [];
-
-        foreach ($users as $k => $user){
-            $selected[$k] = $user->id;
-        }
-
-        $all = [];
-        foreach ($all_users as $key=>$item){
-            $all[$key]['id'] = $item->id;
-            $all[$key]['name'] = $item->name;
-            $all[$key]['email'] = $item->email;
-            $all[$key]['checked'] = false;
-        }
-
-        foreach ($all as $a_key => $a){
-            foreach ($selected as $s){
-                if($a['id'] === $s){
-                    $all[$a_key]['checked'] = true;
-                }
+        foreach($users as &$user){
+            if(in_array($user->id, $selectedUsers)){
+                $user->checked=true;
+            }else{
+                $user->checked = false;
             }
         }
-
-        $users = $all;
 
         return view('department.edit', compact('department', 'users'));
     }
@@ -127,6 +110,7 @@ class DepartmentController extends Controller
     {
         $department = Department::find($id);
         $data = $request->all();
+
 
         $users_ids = [];
         if(!empty($data['users'])){
@@ -150,7 +134,7 @@ class DepartmentController extends Controller
         $department->update($data);
         $department->users()->sync($users_ids);
 
-        return redirect()->route('department');
+        return redirect()->route('department.index');
     }
 
     /**
@@ -163,6 +147,6 @@ class DepartmentController extends Controller
     {
         $department = Department::find($id);
         $department->delete();
-        return redirect()->route('department');
+        return redirect()->route('department.index');
     }
 }

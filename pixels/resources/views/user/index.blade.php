@@ -15,7 +15,11 @@
                     <div class="col-3">{{ $user->created_at }}</div>
                     <div class="col-3">
                         <a href="{{ route('user.edit', $user->id) }}"><button type="button" class="btn btn-secondary m-2">Edit</button></a>
-                        <a href="{{ route('user.delete', $user->id) }}"><button type="button" class="btn btn-danger m-2">Delete</button></a>
+                        <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: inline-block">
+                            @method('DELETE')
+                            @csrf
+                            <input type="submit" class="btn btn-danger" value="Delete"/>
+                        </form>
                     </div>
                 </div>
             @endforeach

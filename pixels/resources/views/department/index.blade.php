@@ -25,7 +25,11 @@
                     </div>
                     <div class="col-2">
                         <a href="{{ route('department.edit', $department->id) }}"><button type="button" class="btn btn-secondary m-2">Edit</button></a>
-                        <a href="{{ route('department.delete', $department->id) }}"><button type="button" class="btn btn-danger m-2">Delete</button></a>
+                        <form action="{{ route('department.destroy', $department->id) }}" method="POST" style="display: inline-block">
+                            @method('DELETE')
+                            @csrf
+                            <input type="submit" class="btn btn-danger" value="Delete"/>
+                        </form>
                     </div>
                 </div>
             @endforeach
