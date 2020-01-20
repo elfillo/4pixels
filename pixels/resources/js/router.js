@@ -1,19 +1,32 @@
 import VueRouter from 'vue-router'
-import Home from "./components/Home";
-import About from "./components/About";
+import Welcome from "./components/Welcome";
+import User from "./components/user/index";
+import UserCreate from "./components/user/create";
+import UserEdit from "./components/user/edit";
 
 export default new VueRouter({
    routes: [
        {
            path: '/',
-           name: 'home',
-           component: Home
+           name: 'welcome',
+           component: Welcome
        },
        {
-           path: '/about',
-           name: 'about',
-           component: About
+           path: '/user',
+           name: 'user',
+           component: User
        },
+       {
+           path: '/user/create',
+           name: 'user.create',
+           component: UserCreate
+       },
+       {
+           path: '/user:id/edit',
+           name: 'user.edit',
+           component: UserEdit
+       }
    ],
-   mode: 'history'
+   mode: 'history',
+   linkActiveClass: 'active'
 });

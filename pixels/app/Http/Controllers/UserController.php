@@ -16,7 +16,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::latest()->paginate(4);
-        return view('user.index', ['users' => $users]);
+
+        return response()->json($users);
+        //return view('user.index', ['users' => $users]);
     }
 
     /**
@@ -47,9 +49,14 @@ class UserController extends Controller
 
         $request->validate($rules);
 
+        if(!empty($data['password'])){
+            $data['password'] = bcrypt($data['password']);
+        }
+
         User::create($data);
 
-        return redirect()->route('user.index');
+        //return redirect()->route('user.index');
+        return response()->json();
     }
 
     /**
@@ -60,7 +67,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        return response()->json($user);
     }
 
     /**
@@ -107,7 +115,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('user.index');
+        return response()->json();
     }
 
     /**
@@ -120,6 +128,10 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect()->route('user.index');
+
+        $users = User::latest()->paginate(4);
+
+        return response()->json($users);
+        //return redirect()->route('user.index');
     }
 }
