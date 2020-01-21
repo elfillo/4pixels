@@ -141,7 +141,7 @@ class DepartmentController extends Controller
         $department = Department::find($id);
         $department->delete();
 
-        $departments = Department::latest()->paginate(4);
+        $departments = Department::latest()->with('users')->paginate(4);
 
         return response()->json($departments);
     }
