@@ -13,12 +13,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->paginate(4);
+        if(isset($request) && $request->has('all')){
+            $users = User::all();
+        }else{
+            $users = User::latest()->paginate(4);
+        }
 
         return response()->json($users);
-        //return view('user.index', ['users' => $users]);
     }
 
     /**
@@ -55,7 +58,6 @@ class UserController extends Controller
 
         User::create($data);
 
-        //return redirect()->route('user.index');
         return response()->json();
     }
 
@@ -132,6 +134,5 @@ class UserController extends Controller
         $users = User::latest()->paginate(4);
 
         return response()->json($users);
-        //return redirect()->route('user.index');
     }
 }

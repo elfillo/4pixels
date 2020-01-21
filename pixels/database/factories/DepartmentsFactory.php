@@ -12,7 +12,7 @@ $factory->define(Department::class, function (Faker $faker) {
 
     return [
         'name' => $faker->word,
-        'description' => $faker->paragraph,
+        'description' => $faker->sentence,
         'logo' => rand(1,4).'.jpeg'
     ];
 });

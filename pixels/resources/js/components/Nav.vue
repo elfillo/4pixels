@@ -2,13 +2,9 @@
     <div>
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                Laravel
-            </a>
+            <router-link :to="{ name: 'welcome' }" class="navbar-brand">Laravel</router-link>
             <router-link :to="{ name: 'user' }" class="navbar-brand">Users</router-link>
-            <a class="navbar-brand" href="#">
-                Departments
-            </a>
+            <router-link :to="{ name: 'department' }" class="navbar-brand">Departments</router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

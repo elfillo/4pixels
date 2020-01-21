@@ -17,8 +17,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::latest()->paginate(4);
-        return view('department.index', ['departments' => $departments]);
+        $departments = Department::latest()->with('users')->paginate(4);
+        return response()->json($departments);
     }
 
     /**
@@ -44,6 +44,7 @@ class DepartmentController extends Controller
 
         $users_ids = [];
         if(!empty($data['users'])){
+            $data['users'] = explode(",", $data['users']);
             foreach ($data['users'] as $user){
                 $users_ids[] = (int)$user;
             }
@@ -53,7 +54,7 @@ class DepartmentController extends Controller
             'name'          => 'required|string|min:2|max:15|unique:departments,name',
             'description'   => 'required|string|min:10',
             'logo'          => 'required',
-            'users'         => 'required|array'
+            'users'         => 'required'
         );
 
         $request->validate($rules);
@@ -62,7 +63,7 @@ class DepartmentController extends Controller
         $post = Department::create($data);
         $post->users()->sync($users_ids);
 
-        return redirect()->route('department.index');
+        return response()->json();
     }
 
     /**
@@ -73,7 +74,19 @@ class DepartmentController extends Controller
      */
     public function show($id)
     {
-        //
+        $department = Department::find($id);
+        $users = User::all();
+        $selectedUsers = $department->users()->get()->pluck('id')->toArray();
+
+        /*foreach($users as &$user){
+            if(in_array($user->id, $selectedUsers)){
+                $user->checked=true;
+            }else{
+                $user->checked = false;
+            }
+        }*/
+
+        return response()->json(['department' => $department, 'users' => $users, 'selectedUsers' => $selectedUsers]);
     }
 
     /**
@@ -108,12 +121,13 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $department = Department::find($id);
         $data = $request->all();
 
-
         $users_ids = [];
         if(!empty($data['users'])){
+            $data['users'] = explode(",", $data['users']);
             foreach ($data['users'] as $user){
                 $users_ids[] = (int)$user;
             }
@@ -134,7 +148,7 @@ class DepartmentController extends Controller
         $department->update($data);
         $department->users()->sync($users_ids);
 
-        return redirect()->route('department.index');
+        return response()->json();
     }
 
     /**
@@ -147,6 +161,9 @@ class DepartmentController extends Controller
     {
         $department = Department::find($id);
         $department->delete();
-        return redirect()->route('department.index');
+
+        $departments = Department::latest()->paginate(4);
+
+        return response()->json($departments);
     }
 }

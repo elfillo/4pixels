@@ -19,7 +19,7 @@ class DepartmentsTableSeeder extends Seeder
 
         Department::All()->each(function ($departments) use ($users){
             $departments->users()->attach(
-                $users->random(rand(1, 15))->pluck('id')->toArray()
+                $users->random(rand(1, 7))->pluck('id')->toArray()
             );
         });
     }
