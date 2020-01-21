@@ -1,4 +1,4 @@
-# Для поднятия локально
+# Для поднятия локально (docker)
 
 Запускаем контейнеры:
 
@@ -42,7 +42,7 @@ cp -R resources/assets/ storage/app/logo/
 php artisan logo:link
 ```
 
-## Сборка стилей и скриптов
+## Сборка стилей и скриптов (node v12)
 
 ```bash
 cd pixels
