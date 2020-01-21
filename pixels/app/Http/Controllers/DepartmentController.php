@@ -28,8 +28,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('department.create', compact('users'));
+        //
     }
 
     /**
@@ -78,14 +77,6 @@ class DepartmentController extends Controller
         $users = User::all();
         $selectedUsers = $department->users()->get()->pluck('id')->toArray();
 
-        /*foreach($users as &$user){
-            if(in_array($user->id, $selectedUsers)){
-                $user->checked=true;
-            }else{
-                $user->checked = false;
-            }
-        }*/
-
         return response()->json(['department' => $department, 'users' => $users, 'selectedUsers' => $selectedUsers]);
     }
 
@@ -97,19 +88,7 @@ class DepartmentController extends Controller
      */
     public function edit($id)
     {
-        $department = Department::find($id);
-        $users = User::all();
-        $selectedUsers = $department->users()->get()->pluck('id')->toArray();
-
-        foreach($users as &$user){
-            if(in_array($user->id, $selectedUsers)){
-                $user->checked=true;
-            }else{
-                $user->checked = false;
-            }
-        }
-
-        return view('department.edit', compact('department', 'users'));
+        //
     }
 
     /**

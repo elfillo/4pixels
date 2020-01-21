@@ -33,6 +33,7 @@ php artisan migrate
 
 ```
 php artisan db:seed
+cp -R resources/assets/ storage/app/logo/
 ```
 
 Для того, чтобы заработали картинки, линкуем сторадж в паблик.
@@ -41,8 +42,6 @@ php artisan db:seed
 php artisan logo:link
 ```
 
-Адрес публичной части сайта: `localhost`.
-
 ## Сборка стилей и скриптов
 
 ```bash
@@ -50,3 +49,10 @@ cd pixels
 npm i
 npm run watch
 ```
+
+Адрес сайта: `localhost`.
+
+Тестовый пользователь: 
+``
+admin@test.loc / password
+``
