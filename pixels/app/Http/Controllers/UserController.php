@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUser;
+use App\Http\Requests\UpdateUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -39,17 +41,11 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUser $request)
     {
         $data = $request->all();
 
-        $rules = array(
-            'name'          => 'required|string|min:2|',
-            'email'         => 'required|email|unique:users,email',
-            'password'      => 'required|min:6',
-        );
-
-        $request->validate($rules);
+        $request->validated();
 
         if(!empty($data['password'])){
             $data['password'] = bcrypt($data['password']);
@@ -90,21 +86,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUser $request, $id)
     {
         $user = User::find($id);
 
         $data = $request->all();
 
-        $password_rule = isset($data['password']) ? 'min:6' : '';
-
-        $rules = array(
-            'name'          => 'required|string|min:2|',
-            'email'         => 'sometimes|required|email|unique:users,id,'.$id,
-            'password'      => $password_rule
-        );
-
-        $request->validate($rules);
+        $request->validated();
 
         if(!empty($data['password'])){
             $data['password'] = bcrypt($data['password']);

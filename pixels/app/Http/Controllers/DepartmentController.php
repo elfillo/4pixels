@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDepartment;
+use App\Http\Requests\UpdateDepartment;
 use App\Models\Department;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Route;
 
 class DepartmentController extends Controller
 {
@@ -37,7 +36,7 @@ class DepartmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDepartment $request)
     {
         $data = $request->all();
 
@@ -49,14 +48,7 @@ class DepartmentController extends Controller
             }
         }
 
-        $rules = array(
-            'name'          => 'required|string|min:2|max:15|unique:departments,name',
-            'description'   => 'required|string|min:10',
-            'logo'          => 'required',
-            'users'         => 'required'
-        );
-
-        $request->validate($rules);
+        $request->validated();
 
         $data['logo'] = $request->file('logo')->store('', 'logo');
         $post = Department::create($data);
@@ -98,7 +90,7 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateDepartment $request, $id)
     {
 
         $department = Department::find($id);
@@ -112,13 +104,7 @@ class DepartmentController extends Controller
             }
         }
 
-        $rules = array(
-            'name'          => 'required|string|min:2|max:15',
-            'description'   => 'required|string|min:10',
-            'users'         => 'required'
-        );
-
-        $request->validate($rules);
+        $request->validated();
 
         if(isset($data['logo'])){
             $data['logo'] = $request->file('logo')->store('', 'logo');
